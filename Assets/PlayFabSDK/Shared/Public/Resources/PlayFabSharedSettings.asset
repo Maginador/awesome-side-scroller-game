@@ -15,7 +15,7 @@ MonoBehaviour:
   TitleId: 30B9C
   DeveloperSecretKey: JHXK31RKS993DSX95IZITWHHROA5XY787UF8X5JDZCTTF8NZY6
   ProductionEnvironmentUrl: 
-  RequestType: 2
+  RequestType: 1
   DisableDeviceInfo: 0
   DisableFocusTimeCollection: 0
   RequestTimeout: 2000
