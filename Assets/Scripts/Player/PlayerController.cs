@@ -13,8 +13,9 @@ public class PlayerController : Spaceship
     }
 
     // Update is called once per frame
-    private void Update()
+    private new void Update()
     {
+        base.Update();
         if (Input.GetButton("Fire1") || Input.touches.Length>0)
         {
 #if UNITY_EDITOR
@@ -26,5 +27,6 @@ public class PlayerController : Spaceship
            Debug.DrawLine(mainCamera.transform.position, destination, Color.red, 10);
            MoveToPosition(destination.x, destination.y);
         }
+        
     }
 }

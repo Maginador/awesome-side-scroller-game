@@ -11,6 +11,7 @@ public class Spaceship : Entity
     private int _speed;
     private int _energy;
     private float _shootRate;
+    private float _shootTimer;
     private GameObject _destructionVFX;
     private GameObject _bullet;
     
@@ -21,7 +22,12 @@ public class Spaceship : Entity
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    
+    public void Update()
+    {
+        DoShoot();
+        
+    }
+
     private void InitializeSpaceship()
     {
         if (!spaceshipData) return;
@@ -43,13 +49,30 @@ public class Spaceship : Entity
     {
         _rigidbody.MovePosition(transform.position + new Vector3(x, y, 0));
     }
-    public void OnShoot()
+
+    private void DoShoot()
     {
-        //TODO: Create pool helper to improve performance 
-        if (_bullet)
+        Debug.Log("DoShoot");
+
+        if (_shootTimer <= 0)
         {
-            Instantiate(_bullet);
+            OnShoot();
+            _shootTimer = 1.0f/_shootRate;
         }
+        else
+        {
+            _shootTimer -= Time.deltaTime;
+        }
+    }
+
+    private void OnShoot()
+    {
+        Debug.Log("OnShoot");
+        //TODO: Create pool helper to improve performance 
+        if (!_bullet) return;
+        Debug.Log("_bullet");
+
+        Instantiate(_bullet,transform.position, transform.rotation);
     }
     public void OnTakeDamage(int damage)
     {
