@@ -12,5 +12,6 @@ namespace ScriptableObjects
         public float shootRate;
         public GameObject destructionVFX;
         public GameObject bullet;
+        public string bulletTag; 
     }
 }

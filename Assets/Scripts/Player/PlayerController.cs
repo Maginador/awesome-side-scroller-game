@@ -27,6 +27,5 @@ public class PlayerController : Spaceship
            Debug.DrawLine(mainCamera.transform.position, destination, Color.red, 10);
            MoveToPosition(destination.x, destination.y);
         }
-        
     }
 }
