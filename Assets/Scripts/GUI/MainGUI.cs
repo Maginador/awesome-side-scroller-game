@@ -45,12 +45,16 @@ namespace GUI
         {
             mainScreen.SetActive(false);
             progressScreen.SetActive(true);
+            currentScreen = Screens.Progress;
+
         }
 
         public void OpenEndlessScreen()
         {
             mainScreen.SetActive(false);
             endlessScreen.SetActive(true);
+            currentScreen = Screens.Endless;
+
         }
 
         public void ToggleSound()
@@ -68,12 +72,15 @@ namespace GUI
         {
             mainScreen.SetActive(false);
             storeScreen.SetActive(true);
+            currentScreen = Screens.Store;
         }
 
         public void OpenUpgrade()
         {
             mainScreen.SetActive(false);
             upgradeScreen.SetActive(true);
+            currentScreen = Screens.Upgrade;
+
         }
     }
 }
