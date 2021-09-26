@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Progress02
   m_EditorClassIdentifier: 
   levelName: Progress01
-  spaceShipsQuantity: 5
+  spaceShipsQuantity: 6
   difficulty: 0
   bossCount: 0
   levelTimer: 30

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Progress05
   m_EditorClassIdentifier: 
   levelName: Progress01
-  spaceShipsQuantity: 5
+  spaceShipsQuantity: 15
   difficulty: 0
   bossCount: 0
-  levelTimer: 30
+  levelTimer: 50
   enemiesPrefabList:
   - {fileID: 306192797052860241, guid: 83da36480202f44b09930fe6cdf3d30b, type: 3}
   possiblePositions:
