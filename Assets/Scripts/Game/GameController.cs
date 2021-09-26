@@ -45,6 +45,7 @@ namespace Game
             }
 
             MainGUI.OpenMenu(screen);
+            
         }
 
         public void GetCurrency()

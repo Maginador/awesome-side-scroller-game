@@ -17,10 +17,14 @@ public class PlayfabManager : MonoBehaviour
     private bool _lockDispatcher = false;
 
     private Action<Dictionary<string, ObjectResult>> _upgradeResultListener;
+    private Action<Dictionary<string, ObjectResult>> _progressResultListener;
 
     public void AddUpgradeResultListener(Action<Dictionary<string, ObjectResult>> listener)
     {
         _upgradeResultListener += listener;
+    } public void AddProgressResultListener(Action<Dictionary<string, ObjectResult>> listener)
+    {
+        _progressResultListener += listener;
     }
     public void Awake()
     {
@@ -84,6 +88,50 @@ public class PlayfabManager : MonoBehaviour
 
     }
 
+    public void GetPlayerProgress()
+    {
+        if (PlayerPrefs.HasKey("ProgressInitialize"))
+        {
+            var request = new GetObjectsRequest {Entity = new EntityKey {Id = login.EntityToken.Entity.Id, Type = login.EntityToken.Entity.Type}};
+            PlayFabDataAPI.GetObjects(request, OnGetProgress, OnError);
+        }
+        else
+        {
+            SetProgressValue(0);
+        }
+    }
+
+    private void SetProgressValue(int level)
+    {
+        var request = new SetObjectsRequest();
+        var data = new Dictionary<string, object>()
+        {
+            {"progress", level}
+                
+        };
+            
+        var dataList = new List<SetObject>()
+        {
+            new SetObject()
+            {
+                ObjectName = "ProgressData",
+                DataObject = data
+            },
+        };
+        PlayFabDataAPI.SetObjects(new SetObjectsRequest()
+        {
+            Entity = new EntityKey {Id = login.EntityToken.Entity.Id, Type = login.EntityToken.Entity.Type},
+            Objects = dataList,
+        }, (setResult) => {
+            PlayerPrefs.SetInt("ProgressInitialize", 1);
+            GetPlayerProgress();
+        }, OnError);    }
+
+    private void OnGetProgress(GetObjectsResponse obj)
+    {
+        _progressResultListener.Invoke(obj.Objects);
+    }
+
     public void GetPlayerUpgrades()
     {
         if (PlayerPrefs.HasKey("UpgradesInitialized"))
@@ -115,7 +163,7 @@ public class PlayfabManager : MonoBehaviour
             };
             PlayFabDataAPI.SetObjects(new SetObjectsRequest()
             {
-                Entity = new EntityKey {Id = login.EntityToken.Entity.Id, Type = login.EntityToken.Entity.Type}, // Saved from GetEntityToken, or a specified key created from a titlePlayerId, CharacterId, etc
+                Entity = new EntityKey {Id = login.EntityToken.Entity.Id, Type = login.EntityToken.Entity.Type},
                 Objects = dataList,
             }, (setResult) => {
                 Debug.Log(setResult.ProfileVersion);
@@ -167,5 +215,10 @@ public class PlayfabManager : MonoBehaviour
         Debug.LogError("Request got error : " + playFabError.Error);
         _lockDispatcher = false;
 
+    }
+
+    public void SetProgress(int level)
+    {
+        SetProgressValue(level);
     }
 }

@@ -1,12 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Level;
+using PlayFab.DataModels;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
+using Random = UnityEngine.Random;
 
+public class ProgressInfo
+{
+    public int progress;
+
+    public static ProgressInfo GetProgressFromJson(string json)
+    {
+        return JsonUtility.FromJson<ProgressInfo>(json);
+    }
+}
 public class ProgressBuilder : MonoBehaviour
 {
     
@@ -29,8 +41,8 @@ public class ProgressBuilder : MonoBehaviour
     [SerializeField] private Vector2 yOffsetVariation;
 
     private ScreenOrientation _currentOrientation;
-    
-    
+
+    private int _currentLevel = 0;
     
     // Start is called before the first frame update
     private void Start()
@@ -38,9 +50,39 @@ public class ProgressBuilder : MonoBehaviour
         _currentOrientation = Screen.orientation;
         progressEdgesList = new List<GameObject>();
         progressNodeList = new List<GameObject>();
+    
         BuildNodes();
         BuildEdges();
-        
+    }
+
+    private void OnEnable()
+    {
+        PlayfabManager.Instance.AddProgressResultListener(OnProgressResult);
+        PlayfabManager.Instance.GetPlayerProgress();
+    }
+
+    private void OnProgressResult(Dictionary<string, ObjectResult> obj)
+    {
+        Debug.Log("OnProgressResult");
+
+        foreach (var progress in obj)
+        {
+            if (progress.Key == "ProgressData")
+            {
+                Debug.Log("key : " + progress.Key +" : value : " + progress.Value.DataObject);
+                var info = ProgressInfo.GetProgressFromJson(progress.Value.DataObject.ToString());
+
+                _currentLevel = info.progress;
+                Debug.Log("Current Level : " + _currentLevel);
+            }
+        }
+
+        UpdateProgressUI();
+    }
+
+    private void UpdateProgressUI()
+    {
+        //TODO Update ui with new progress
     }
 
     void BuildNodes()
@@ -62,7 +104,6 @@ public class ProgressBuilder : MonoBehaviour
 
     private void RunLevel(int index)
     {
-        Debug.Log(gameObject.name);
         LevelRunner.Instance.RunLevel(index);
     }
 
@@ -71,32 +112,10 @@ public class ProgressBuilder : MonoBehaviour
         
     }
     // Update is called once per frame
-    void Update()
-    {
-        
-        #if UNITY_EDITOR
-        Screen.orientation = Screen.width > Screen.height ? ScreenOrientation.Landscape : ScreenOrientation.Portrait;
-        #endif
-        
-        if (_currentOrientation != Screen.orientation)
-        {
-            OnOrientationChanged();
-        }
-    }
 
-    private void OnOrientationChanged()
+    public void UpdateCurrentLevel(int level)
     {
-        _currentOrientation = Screen.orientation;
-        if (Screen.orientation == ScreenOrientation.Landscape)
-        {
-            scroll.vertical = false;
-            scroll.horizontal = true;
-        }
-        else
-        {
-            scroll.vertical = true;
-            scroll.horizontal = false;
-        }
+        _currentLevel = level;
+        PlayfabManager.Instance.SetProgress(level);
     }
-    
 }

@@ -116,8 +116,9 @@ namespace Level
       //TODO set level time, difficulty, get prefabs and run level 
     }
 
-    public void OnContinueButtonPressed()
+    public void OnContinueButtonPressed(bool winner)
     {
+      if(winner) PlayfabManager.Instance.SetProgress(_currentLevelData.LevelIndex+1);
       GameController.Instance.DeepLinkMainGUI(MainGUI.Screens.Progress);
       SceneManager.LoadScene(1);
       
