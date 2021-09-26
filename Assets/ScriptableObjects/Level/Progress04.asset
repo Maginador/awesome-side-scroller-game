@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb170bcc309e4ada89b363a32340ae4a, type: 3}
-  m_Name: Progress01
+  m_Name: Progress04
   m_EditorClassIdentifier: 
   levelName: Progress01
-  spaceShipsQuantity: 5
+  spaceShipsQuantity: 10
   difficulty: 0
   bossCount: 0
-  levelTimer: 30
+  levelTimer: 50
   enemiesPrefabList:
   - {fileID: 306192797052860241, guid: 83da36480202f44b09930fe6cdf3d30b, type: 3}
   possiblePositions:

@@ -10,11 +10,11 @@ namespace Level
 {
   public class LevelController : MonoBehaviour
   {
-    //draft 
     private float _timeLimit, _timer, _spawnTime, _spawnTimer;
     private LevelData _currentLevelData;
     private LevelScriptableObject _currentLevelObject;
     [SerializeField] private GameObject endgameUI;
+    [SerializeField] private GameObject gameOverUI;
 
     private void Awake()
     {
@@ -24,6 +24,7 @@ namespace Level
 
     private void Update()
     {
+      if (!LevelRunner.Instance) return;
       TimeController();
       
     }
@@ -32,8 +33,9 @@ namespace Level
     {
       var enemyIndex = Random.Range(0, _currentLevelObject.enemiesPrefabList.Length);
       var enemyPrefab = _currentLevelObject.enemiesPrefabList[enemyIndex];
-    
-      Instantiate(enemyPrefab, GetRandomPosition(), Quaternion.identity);
+      
+      var enemy = Instantiate(enemyPrefab);
+      enemy.transform.position = GetRandomPosition();
     }
 
     private Vector3 GetRandomPosition()
@@ -78,6 +80,11 @@ namespace Level
     {
       endgameUI.SetActive(true);
     }
+    public void ShowGameOverScreen()
+    {
+      gameOverUI.SetActive(true);
+
+    }
 
     private void ConfigureLevel()
     {
@@ -102,8 +109,7 @@ namespace Level
     }
     void GetLevelData()
     {
-      Debug.Log("GetLevelData");
-
+      if (!LevelRunner.Instance) return;
       _currentLevelData = LevelRunner.Instance.Data;
       _currentLevelObject = LevelRunner.Instance.GetLevel(_currentLevelData.LevelIndex);
     
@@ -116,6 +122,5 @@ namespace Level
       SceneManager.LoadScene(1);
       
     }
-
   }
 }

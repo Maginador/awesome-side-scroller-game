@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac108b4973e046f6a9fcdeea610ccd7, type: 3}
-  m_Name: PlayerSpaceship
+  m_Name: StaticEnemy1
   m_EditorClassIdentifier: 
-  spaceshipName: 
-  healthPoints: 3
-  speed: 5
-  energy: 10
+  spaceshipName: Fasten
+  healthPoints: 100
+  speed: 0
+  energy: 0
   shootRate: 1
   destructionVFX: {fileID: 0}
-  bullet: {fileID: 3426208447554051851, guid: bdd39a32c6681492c8a7c8eb8bf419a6, type: 3}
-  bulletTag: PlayerBullet
+  bullet: {fileID: 3426208447554051851, guid: c388df7c88863429a892c7eed5a0fdaa, type: 3}
+  bulletTag: EnemyBullet

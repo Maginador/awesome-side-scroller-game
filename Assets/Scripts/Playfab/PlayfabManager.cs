@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -23,7 +24,7 @@ public class PlayfabManager : MonoBehaviour
 
     public void PlayerLogin()
     {
-        Player.CreateNewPlayer();
+        Player.PlayerData.CreateNewPlayer();
         var request = new LoginWithCustomIDRequest
         {
             CustomId = Profile.GetID(),

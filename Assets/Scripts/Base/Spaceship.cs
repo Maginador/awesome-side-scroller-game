@@ -90,7 +90,8 @@ public class Spaceship : Entity
         }
         else
         {
-            Instantiate(Resources.Load("VFX/DefaultExplosion"));
+            Instantiate(Resources.Load("VFX/DefaultExplosion"),transform.position, transform.rotation);
         }
+        Destroy(gameObject);
     }
 }

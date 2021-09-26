@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2659206577267002002}
   - component: {fileID: 2659206577267002001}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: FastEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,14 +25,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306192797052860241}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 6849295899020214497}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!54 &2659206577267002002
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -47,7 +47,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!114 &2659206577267002001
 MonoBehaviour:
@@ -61,7 +61,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd04a064d2da14973a3e2785628d25cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaceshipData: {fileID: 11400000, guid: 91da837f265494cc0a42ee6f56de8375, type: 2}
+  spaceshipData: {fileID: 11400000, guid: 2e942bca6c85a4aea91e921840ae9337, type: 2}
+  rigidBody: {fileID: 2659206577267002002}
 --- !u!1 &880522244903308826
 GameObject:
   m_ObjectHideFlags: 0
