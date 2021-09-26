@@ -1,15 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using Level;
+using UnityEngine;
 
 namespace Player
 {
     public class PlayerController : Spaceship
     {
-        [SerializeField]
-        private Camera mainCamera;
+        [SerializeField] private Camera mainCamera;
 
-        void Start()
+        [SerializeField] private LevelController level;
+
+        private void Start()
         {
-        
+            if(mainCamera == null) mainCamera = Camera.main;
+            if (level == null) level = FindObjectOfType<LevelController>();
         }
 
         // Update is called once per frame
@@ -36,6 +40,12 @@ namespace Player
                 OnTakeDamage(1);
                 Destroy(other.gameObject);
             }
+        }
+
+
+        private void OnDestroy()
+        {
+            level.ShowGameOverScreen();
         }
     }
 }
