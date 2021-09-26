@@ -5,6 +5,7 @@ namespace GUI
 {
     public class MainGUI : MonoBehaviour
     {
+        public static MainGUI Instance;
         //GUI Screens
         [SerializeField] private GameObject mainScreen;
         [SerializeField] private GameObject progressScreen;
@@ -19,6 +20,10 @@ namespace GUI
 
         public void Awake()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
             currentScreen = Screens.Main;
         }
 
@@ -80,7 +85,27 @@ namespace GUI
             mainScreen.SetActive(false);
             upgradeScreen.SetActive(true);
             currentScreen = Screens.Upgrade;
+        }
 
+        public static void OpenMenu(Screens screen)
+        {
+            switch (screen)
+            {
+                case Screens.Progress :
+                    Instance.OpenProgressScreen();
+                    break;
+                case Screens.Endless:
+                    Instance.OpenEndlessScreen();
+                    break;
+                case Screens.Store:
+                    Instance.OpenStore();
+                    break;
+                case Screens.Upgrade:
+                    Instance.OpenUpgrade();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(screen), screen, null);
+            }
         }
     }
 }
