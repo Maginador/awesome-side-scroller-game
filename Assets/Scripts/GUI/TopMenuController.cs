@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
 
@@ -9,9 +10,17 @@ public class TopMenuController : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI softCurrencyText, hardCurrencyText;
     // Start is called before the first frame update
-    private void Awake()
+
+    private void OnEnable()
     {
         Game.GameController.Instance.AddCurrencyChangedListener(CurrencyUpdate);
+        CurrencyUpdate();
+    }
+
+    private void OnDisable()
+    {
+        Game.GameController.Instance.RemoveCurrencyChangedListener(CurrencyUpdate);
+
     }
 
     // Update is called once per frame

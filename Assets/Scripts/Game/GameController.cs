@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using GUI;
+using Playfab;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -77,6 +78,11 @@ namespace Game
                 _hardCurrency = currencyValue;
             }
             _currencyChangedListener.Invoke();
+        }
+
+        public void RemoveCurrencyChangedListener(Action currencyUpdate)
+        {
+            _currencyChangedListener -= currencyUpdate;
         }
     }
 }
