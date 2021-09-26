@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Info;
 using Level;
 using Playfab;
 using PlayFab.DataModels;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 using Random = UnityEngine.Random;
 
 
-namespace Info
+namespace GUI
 {
     public class ProgressBuilder : MonoBehaviour
     {
