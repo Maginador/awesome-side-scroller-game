@@ -9,21 +9,49 @@ using UnityEngine.UI;
 
 public class PlayfabManager : MonoBehaviour
 {
-
-
-    public Text debug;
     public static PlayfabManager Instance;
+    private Queue<Action> _playfabEventsQueue;
+    private bool _lockDispatcher = false;
 
     public void Awake()
     {
         if (!Instance)
         {
             Instance = this;
-        }   
+        }
+
+        _playfabEventsQueue = new Queue<Action>();
     }
 
+    private void Update()
+    {
+        StartCoroutine(RunPlayfabDispatcher());
+    }
+
+    private IEnumerator RunPlayfabDispatcher()
+    {
+        while (true)
+        {
+            if (_playfabEventsQueue.Count > 0 && !_lockDispatcher)
+            {
+                _lockDispatcher = true;
+                _playfabEventsQueue.Dequeue().Invoke();
+
+            }
+
+            yield return null;
+        }
+    }
     public void PlayerLogin()
     {
+        
+        _playfabEventsQueue.Enqueue(OnPlayerLogin);
+
+    }
+
+    private void OnPlayerLogin()
+    {
+        //TODO Check if the player already exists 
         Player.PlayerData.CreateNewPlayer();
         var request = new LoginWithCustomIDRequest
         {
@@ -31,9 +59,7 @@ public class PlayfabManager : MonoBehaviour
             CreateAccount = true
         };
         PlayFabClientAPI.LoginWithCustomID(request, OnCustomLoginSuccess, OnError);
-
     }
-
     public void LoginWithGooglePlay()
     {
         //TODO:: Develop Google Play login
@@ -41,20 +67,47 @@ public class PlayfabManager : MonoBehaviour
         //PlayFabClientAPI.LoginWithGoogleAccount(request, OnGoogleLogin, OnError);
     }
 
-    private static void OnCustomLoginSuccess(LoginResult loginResult)
+    public void GetCurrency()
     {
-        Debug.Log("Logged as " + loginResult.PlayFabId);
-        Instance.debug.text = "Session Ticket : " + loginResult.SessionTicket;
-        Instance.debug.text += "\nSession EntityToken : " + loginResult.EntityToken.EntityToken;
-        Instance.debug.text += "\nSession Id : " + loginResult.PlayFabId;
-    }
-    private static void OnGoogleLogin(LoginResult loginResult)
-    {
-        //TODO:: Develop Google Play login
+        _playfabEventsQueue.Enqueue(OnGetCurrency);
+
     }
 
-    private static void OnError(PlayFabError playFabError)
+    private void OnGetCurrency()
+    {
+        var request = new GetUserInventoryRequest();
+        
+        PlayFabClientAPI.GetUserInventory(request, GetCurrencyResult, OnError);
+    }
+    private void GetCurrencyResult(GetUserInventoryResult obj)
+    {
+        foreach (var currency in obj.VirtualCurrency)
+        {
+            Game.GameController.Instance.SetCurrency(currency.Key, currency.Value);
+        }
+
+        _lockDispatcher = false;
+    }
+
+    private void OnCustomLoginSuccess(LoginResult loginResult)
+    {
+        Debug.Log("Logged as " + loginResult.PlayFabId);
+
+        _lockDispatcher = false;
+
+        
+    }
+    private void OnGoogleLogin(LoginResult loginResult)
+    {
+        //TODO:: Develop Google Play login
+        _lockDispatcher = false;
+
+    }
+
+    private void OnError(PlayFabError playFabError)
     {
         Debug.LogError("Request got error : " + playFabError.Error);
+        _lockDispatcher = false;
+
     }
 }
