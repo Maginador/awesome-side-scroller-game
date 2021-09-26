@@ -54,8 +54,6 @@ public class Spaceship : Entity
 
     private void DoShoot()
     {
-        Debug.Log("DoShoot");
-
         if (_shootTimer <= 0)
         {
             OnShoot();
@@ -69,10 +67,8 @@ public class Spaceship : Entity
 
     private void OnShoot()
     {
-        Debug.Log("OnShoot");
         //TODO: Create pool helper to improve performance 
         if (!_bullet) return;
-        Debug.Log("_bullet");
 
         var spaceshipTransform = transform;
         Instantiate(_bullet,spaceshipTransform.position + spaceshipTransform.up, spaceshipTransform.rotation).tag = _bulletTag;

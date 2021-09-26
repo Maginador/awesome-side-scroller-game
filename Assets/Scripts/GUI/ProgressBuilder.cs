@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Level;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 public class ProgressBuilder : MonoBehaviour
 {
@@ -50,9 +53,17 @@ public class ProgressBuilder : MonoBehaviour
             var node = Instantiate(progressNodePrefab, scroll.content, true);
             node.GetComponent<RectTransform>().position = initialPosition.position + defaultOffset * i + new Vector3(0,Random.Range(yOffsetVariation.x,yOffsetVariation.y),0);
             node.GetComponentInChildren<Text>().text = (i + 1).ToString();
+            var i1 = i;
+            node.GetComponent<Button>().onClick.AddListener(delegate{RunLevel(i1);});
             progressNodeList.Add(node);
             
         }
+    }
+
+    private void RunLevel(int index)
+    {
+        Debug.Log(gameObject.name);
+        LevelRunner.Instance.RunLevel(index);
     }
 
     void BuildEdges()
@@ -67,7 +78,6 @@ public class ProgressBuilder : MonoBehaviour
         Screen.orientation = Screen.width > Screen.height ? ScreenOrientation.Landscape : ScreenOrientation.Portrait;
         #endif
         
-        Debug.Log(Screen.orientation);
         if (_currentOrientation != Screen.orientation)
         {
             OnOrientationChanged();
