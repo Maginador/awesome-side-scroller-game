@@ -16,7 +16,7 @@ MonoBehaviour:
   spaceShipsQuantity: 5
   difficulty: 0
   bossCount: 0
-  levelTimer: 100
+  levelTimer: 30
   enemiesPrefabList:
   - {fileID: 306192797052860241, guid: 83da36480202f44b09930fe6cdf3d30b, type: 3}
   possiblePositions:
