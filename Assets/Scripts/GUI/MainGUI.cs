@@ -1,4 +1,5 @@
 ﻿using System;
+using Playfab;
 using UnityEngine;
 
 namespace GUI
@@ -14,7 +15,7 @@ namespace GUI
         [SerializeField] private GameObject upgradeScreen;
 
         [SerializeField] private GameObject soundDisabled;
-        public enum Screens { Main, Progress, Endless, Store, Upgrade}
+        public enum Screens { Load, Main, Progress, Endless, Store, Upgrade}
 
         public Screens currentScreen;
 
@@ -24,7 +25,23 @@ namespace GUI
             {
                 Instance = this;
             }
-            currentScreen = Screens.Main;
+            currentScreen = Screens.Load;
+        }
+
+        public void Update()
+        {
+            if (currentScreen == Screens.Load)
+            {
+                if (PlayfabManager.Instance.IsLogged())
+                {
+                    OpenMainScreen();
+                }
+            }
+        }
+
+        private void OpenMainScreen()
+        {
+            mainScreen.SetActive(true);
         }
 
         public void BackToMainScreen()

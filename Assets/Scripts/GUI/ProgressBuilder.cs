@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Level;
+using Playfab;
 using PlayFab.DataModels;
 using UnityEngine;
 using UnityEngine.Events;

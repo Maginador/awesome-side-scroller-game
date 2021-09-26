@@ -1,37 +1,49 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Playfab;
 using PlayFab.DataModels;
 using UnityEngine;
 
-public class UpgradeScreen : MonoBehaviour
-{
-    [SerializeField] private List<UpgradeHandler> upgradeHandlers;
-    // Start is called before the first frame update
-    void Awake()
-    {
-        PlayfabManager.Instance.AddUpgradeResultListener(UpgradeDataResult);
-        
-        PlayfabManager.Instance.GetPlayerUpgrades();
-    }
 
-    private void UpgradeDataResult(Dictionary<string, ObjectResult> obj)
+namespace GUI
+{
+    public class UpgradeScreen : MonoBehaviour
     {
-        foreach (var upgrade in obj)
+        [SerializeField] private List<UpgradeHandler> upgradeHandlers;
+        // Start is called before the first frame update
+        void Awake()
         {
-            foreach (var handler in upgradeHandlers)
+            PlayfabManager.Instance.AddUpgradeResultListener(UpgradeDataResult);
+        
+            PlayfabManager.Instance.GetPlayerUpgrades();
+        }
+
+        private void UpgradeDataResult(Dictionary<string, ObjectResult> obj)
+        {
+            foreach (var upgrade in obj)
             {
-                if (handler.fieldName == upgrade.Key)
+                if (upgrade.Key == "UpgradeData")
                 {
-                    handler.SetCurrent((int)(upgrade.Value.DataObject));
+                    var upgradeInfo = UpgradeInfo.GetUpgradeFromJson(upgrade.Value.DataObject.ToString());
+                    Debug.Log(upgradeInfo);
+                    foreach (var handler in upgradeHandlers)
+                    {
+                        if (handler.fieldName == "healthpoints") handler.SetCurrent(upgradeInfo.healthpoints);
+                        if (handler.fieldName == "energy") handler.SetCurrent(upgradeInfo.energy);
+                        if (handler.fieldName == "shootpower") handler.SetCurrent(upgradeInfo.shootpower);
+                        if (handler.fieldName == "firerate") handler.SetCurrent(upgradeInfo.firerate);
+                        if (handler.fieldName == "armor") handler.SetCurrent(upgradeInfo.armor);
+                        if (handler.fieldName == "bullets") handler.SetCurrent(upgradeInfo.bullets);
+                    }
                 }
             }
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+        // Update is called once per frame
+        void Update()
+        {
         
+        }
     }
 }

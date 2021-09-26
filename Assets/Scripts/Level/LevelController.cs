@@ -1,6 +1,7 @@
 ﻿using System;
 using Game;
 using GUI;
+using Playfab;
 using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.SceneManagement;
