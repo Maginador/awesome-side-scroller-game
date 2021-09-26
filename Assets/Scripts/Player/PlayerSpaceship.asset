@@ -19,3 +19,4 @@ MonoBehaviour:
   shootRate: 1
   destructionVFX: {fileID: 0}
   bullet: {fileID: 3426208447554051851, guid: bdd39a32c6681492c8a7c8eb8bf419a6, type: 3}
+  bulletTag: PlayerBullet
