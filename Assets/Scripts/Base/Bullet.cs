@@ -9,12 +9,12 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(this.gameObject,5);
+        Destroy(this.gameObject,8);
     }
 
     // Update is called once per frame
     private void Update()
     {
-        transform.Translate(transform.up * (speed * Time.deltaTime));
+        transform.Translate(Vector3.up * (speed * Time.deltaTime),Space.Self);
     }
 }
