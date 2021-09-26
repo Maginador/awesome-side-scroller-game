@@ -1,6 +1,6 @@
 ﻿using System;
 using Game;
-using GUI;
+using Info;
 using Playfab;
 using ScriptableObjects;
 using UnityEngine;

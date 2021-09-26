@@ -6,7 +6,7 @@ using PlayFab.DataModels;
 using UnityEngine;
 
 
-namespace GUI
+namespace Info
 {
     public class UpgradeScreen : MonoBehaviour
     {

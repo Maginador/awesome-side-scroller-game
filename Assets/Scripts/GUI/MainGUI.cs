@@ -2,7 +2,7 @@
 using Playfab;
 using UnityEngine;
 
-namespace GUI
+namespace Info
 {
     public class MainGUI : MonoBehaviour
     {

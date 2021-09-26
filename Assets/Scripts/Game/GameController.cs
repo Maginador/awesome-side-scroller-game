@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using GUI;
+using Info;
 using Playfab;
 using UnityEngine;
 using UnityEngine.SceneManagement;
