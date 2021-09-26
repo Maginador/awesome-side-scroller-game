@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,5 +19,15 @@ public class Enemy : Spaceship
         base.Update();
 
         Move();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerBullet"))
+        {
+            OnTakeDamage(10); // TODO Get player power
+            Destroy(other.gameObject);
+
+        }
     }
 }

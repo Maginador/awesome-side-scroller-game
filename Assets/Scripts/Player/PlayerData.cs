@@ -2,8 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-    public class Player : MonoBehaviour
+namespace Player
+{
+    
+    public class PlayerData : MonoBehaviour
     {
+        
+        private int _healthPoint = 100;
+        private int _power = 10;
+    
+        public int GetPower()
+        {
+            return _power;
+        }
+
+        public void SetPower(int power)
+        {
+            _power = power;
+        }
         public static Profile CurrentProfile;
         public static void CreateNewPlayer()
         {
@@ -19,9 +35,10 @@ using UnityEngine;
         }
 
         private static string ID { get; set; }
-
+      
         public static string GetID()
         {
             return ID;
         }
     }
+}
