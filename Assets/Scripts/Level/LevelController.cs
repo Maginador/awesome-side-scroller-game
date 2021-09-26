@@ -24,6 +24,7 @@ namespace Level
 
     private void Update()
     {
+      if (!LevelRunner.Instance) return;
       TimeController();
       
     }
@@ -33,7 +34,7 @@ namespace Level
       var enemyIndex = Random.Range(0, _currentLevelObject.enemiesPrefabList.Length);
       var enemyPrefab = _currentLevelObject.enemiesPrefabList[enemyIndex];
     
-      Instantiate(enemyPrefab, GetRandomPosition(), Quaternion.identity);
+      Instantiate(enemyPrefab).transform.position = GetRandomPosition();
     }
 
     private Vector3 GetRandomPosition()
@@ -102,8 +103,7 @@ namespace Level
     }
     void GetLevelData()
     {
-      Debug.Log("GetLevelData");
-
+      if (!LevelRunner.Instance) return;
       _currentLevelData = LevelRunner.Instance.Data;
       _currentLevelObject = LevelRunner.Instance.GetLevel(_currentLevelData.LevelIndex);
     
