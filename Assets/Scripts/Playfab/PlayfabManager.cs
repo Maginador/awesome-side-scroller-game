@@ -5,14 +5,23 @@ using Player;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.DataModels;
 using UnityEngine.UI;
+using EntityKey = PlayFab.DataModels.EntityKey;
 
 public class PlayfabManager : MonoBehaviour
 {
     public static PlayfabManager Instance;
+    private LoginResult login;
     private Queue<Action> _playfabEventsQueue;
     private bool _lockDispatcher = false;
 
+    private Action<Dictionary<string, ObjectResult>> _upgradeResultListener;
+
+    public void AddUpgradeResultListener(Action<Dictionary<string, ObjectResult>> listener)
+    {
+        _upgradeResultListener += listener;
+    }
     public void Awake()
     {
         if (!Instance)
@@ -30,6 +39,8 @@ public class PlayfabManager : MonoBehaviour
 
     private IEnumerator RunPlayfabDispatcher()
     {
+        
+        //TODO Wait for login
         while (true)
         {
             if (_playfabEventsQueue.Count > 0 && !_lockDispatcher)
@@ -73,6 +84,52 @@ public class PlayfabManager : MonoBehaviour
 
     }
 
+    public void GetPlayerUpgrades()
+    {
+        if (PlayerPrefs.HasKey("UpgradesInitialized"))
+        {
+            var request = new GetObjectsRequest {Entity = new EntityKey {Id = login.EntityToken.Entity.Id, Type = login.EntityToken.Entity.Type}};
+            PlayFabDataAPI.GetObjects(request, OnGetUpgrades, OnError);
+        }
+        else
+        {
+            var request = new SetObjectsRequest();
+            var data = new Dictionary<string, object>()
+            {
+                {"healthpoints", 0},
+                {"energy", 0},
+                {"shootpower", 0},
+                {"firerate",0},
+                {"armor",0},
+                {"bullets",0},
+                
+            };
+            
+            var dataList = new List<SetObject>()
+            {
+                new SetObject()
+                {
+                    ObjectName = "UpgradeData",
+                    DataObject = data
+                },
+            };
+            PlayFabDataAPI.SetObjects(new SetObjectsRequest()
+            {
+                Entity = new EntityKey {Id = login.EntityToken.Entity.Id, Type = login.EntityToken.Entity.Type}, // Saved from GetEntityToken, or a specified key created from a titlePlayerId, CharacterId, etc
+                Objects = dataList,
+            }, (setResult) => {
+                Debug.Log(setResult.ProfileVersion);
+                PlayerPrefs.SetInt("UpgradesInitialized", 1);
+                GetPlayerUpgrades();
+            }, OnError);
+        }
+    }
+
+    private void OnGetUpgrades(GetObjectsResponse obj)
+    {
+        _upgradeResultListener(obj.Objects);
+    }
+
     private void OnGetCurrency()
     {
         var request = new GetUserInventoryRequest();
@@ -92,7 +149,8 @@ public class PlayfabManager : MonoBehaviour
     private void OnCustomLoginSuccess(LoginResult loginResult)
     {
         Debug.Log("Logged as " + loginResult.PlayFabId);
-
+        login = loginResult;
+        
         _lockDispatcher = false;
 
         

@@ -8,7 +8,7 @@ public class UpgradeHandler : MonoBehaviour
 {
 
     
-    [SerializeField] private string fieldName;
+    public string fieldName;
     
     [SerializeField] private GameObject upgradePrefab;
     [SerializeField] private float initialXPosition;
@@ -72,5 +72,10 @@ public class UpgradeHandler : MonoBehaviour
     private void GetUpgradeData()
     {
         //TODO get upgrade data from backend (limit (global) and current (current user)/ initial price and price multiplier)
+    }
+
+    public void SetCurrent(int value)
+    {
+        currentUpgrade = value;
     }
 }

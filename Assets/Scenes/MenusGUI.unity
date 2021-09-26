@@ -304,7 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf52f707264f482f9385b1b59f237d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldName: 
+  fieldName: healthpoints
   upgradePrefab: {fileID: 5885942186584367469, guid: 9a92fde1bdd3e4ee28dd5093122dd02e,
     type: 3}
   initialXPosition: -200
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf52f707264f482f9385b1b59f237d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldName: 
+  fieldName: armor
   upgradePrefab: {fileID: 5885942186584367469, guid: 9a92fde1bdd3e4ee28dd5093122dd02e,
     type: 3}
   initialXPosition: -200
@@ -3967,6 +3967,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9347046ef0846eba33e572d9b5e9ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeHandlers:
+  - {fileID: 77440370}
+  - {fileID: 1868336210}
+  - {fileID: 1876353914}
+  - {fileID: 1289786284}
+  - {fileID: 84937794}
+  - {fileID: 1742743917}
 --- !u!1 &1094216543
 GameObject:
   m_ObjectHideFlags: 0
@@ -4486,7 +4493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf52f707264f482f9385b1b59f237d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldName: 
+  fieldName: firerate
   upgradePrefab: {fileID: 5885942186584367469, guid: 9a92fde1bdd3e4ee28dd5093122dd02e,
     type: 3}
   initialXPosition: -200
@@ -6772,7 +6779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf52f707264f482f9385b1b59f237d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldName: 
+  fieldName: bullets
   upgradePrefab: {fileID: 5885942186584367469, guid: 9a92fde1bdd3e4ee28dd5093122dd02e,
     type: 3}
   initialXPosition: -200
@@ -7470,7 +7477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf52f707264f482f9385b1b59f237d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldName: 
+  fieldName: shootpower
   upgradePrefab: {fileID: 5885942186584367469, guid: 9a92fde1bdd3e4ee28dd5093122dd02e,
     type: 3}
   initialXPosition: -200
@@ -7671,7 +7678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf52f707264f482f9385b1b59f237d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldName: 
+  fieldName: energy
   upgradePrefab: {fileID: 5885942186584367469, guid: 9a92fde1bdd3e4ee28dd5093122dd02e,
     type: 3}
   initialXPosition: -200
