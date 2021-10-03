@@ -71,7 +71,9 @@ public class Spaceship : Entity
         if (!_bullet) return;
 
         var spaceshipTransform = transform;
-        Instantiate(_bullet,spaceshipTransform.position + spaceshipTransform.up, spaceshipTransform.rotation).tag = _bulletTag;
+        var bullet = Instantiate(_bullet,spaceshipTransform.position + spaceshipTransform.up, spaceshipTransform.rotation).GetComponent<Bullet>();
+        bullet.tag = _bulletTag;
+        bullet.SetPower(spaceshipData.shootPower);
     }
     public void OnTakeDamage(int damage)
     {

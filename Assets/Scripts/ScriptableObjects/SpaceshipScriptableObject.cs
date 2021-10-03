@@ -9,9 +9,10 @@ namespace ScriptableObjects
         public int healthPoints;
         public int speed;
         public int energy;
+        public int shootPower;
         public float shootRate;
         public GameObject destructionVFX;
         public GameObject bullet;
-        public string bulletTag; 
+        public string bulletTag;
     }
 }
