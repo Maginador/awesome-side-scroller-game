@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class Enemy : Spaceship
@@ -21,12 +22,13 @@ public class Enemy : Spaceship
         Move();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider hitCollider)
     {
-        if (other.CompareTag("PlayerBullet"))
+        if (hitCollider.CompareTag("PlayerBullet"))
         {
-            OnTakeDamage(10); // TODO Get player power
-            Destroy(other.gameObject);
+            var bullet = hitCollider.GetComponent<Bullet>();
+            OnTakeDamage(bullet.GetPower()); // TODO Get player power
+            Destroy(hitCollider.gameObject);
 
         }
     }

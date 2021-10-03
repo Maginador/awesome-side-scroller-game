@@ -1,5 +1,7 @@
 ﻿using System;
+using Info;
 using Level;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace Player
@@ -10,10 +12,24 @@ namespace Player
 
         [SerializeField] private LevelController level;
 
+        private SpaceshipScriptableObject _playerReferenceSpaceship;
         private void Start()
         {
             if(mainCamera == null) mainCamera = Camera.main;
             if (level == null) level = FindObjectOfType<LevelController>();
+            SetSpaceshipData(PlayerData.GetPlayerUpgradeData());
+        }
+
+        private void SetSpaceshipData(UpgradeInfo getPlayerUpgradeData)
+        {
+            _playerReferenceSpaceship = spaceshipData;
+            spaceshipData = ScriptableObject.CreateInstance<SpaceshipScriptableObject>();
+            spaceshipData.healthPoints = _playerReferenceSpaceship.healthPoints * (getPlayerUpgradeData.HealthPoints+1);
+            spaceshipData.energy = _playerReferenceSpaceship.energy * (getPlayerUpgradeData.Energy+1);
+            spaceshipData.shootPower = _playerReferenceSpaceship.shootPower * (getPlayerUpgradeData.ShootPower+1);
+            spaceshipData.shootRate = _playerReferenceSpaceship.shootRate * (getPlayerUpgradeData.FireRate + 1);
+            spaceshipData.bullet = _playerReferenceSpaceship.bullet;
+            spaceshipData.bulletTag = _playerReferenceSpaceship.bulletTag;
         }
 
         // Update is called once per frame
@@ -33,12 +49,13 @@ namespace Player
             }
         }
     
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider hitCollider)
         {
-            if (other.CompareTag("EnemyBullet"))
+            if (hitCollider.CompareTag("EnemyBullet"))
             {
-                OnTakeDamage(1);
-                Destroy(other.gameObject);
+                var bullet = hitCollider.GetComponent<Bullet>();
+                OnTakeDamage(bullet.GetPower()); 
+                Destroy(hitCollider.gameObject);
             }
         }
 

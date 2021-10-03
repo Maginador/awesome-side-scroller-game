@@ -42,6 +42,7 @@ namespace Player
                 if (upgrade.Key == "UpgradeData")
                 {
                     _currentPlayerUpgradeInfo = UpgradeInfo.GetUpgradeFromJson(upgrade.Value.DataObject.ToString());
+                    
                     Debug.Log(_currentPlayerUpgradeInfo);
                     
                 }
