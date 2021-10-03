@@ -10,6 +10,9 @@ namespace GUI
 {
     public class UpgradeHandler : MonoBehaviour
     {
+        //consts
+        const string SpeedUpString = "Speed Up \n";
+        const string InitialUpgradeButtonString = "Upgrade";
 
     
         public string fieldName;
@@ -36,7 +39,7 @@ namespace GUI
         {
             if (_timer > 0 && _isUpgrading)
             {
-                buttonText.text = "Speed Up \n" + ConvertMiliSeconds(_timer);
+                buttonText.text = SpeedUpString + ConvertMiliSeconds(_timer);
                 var newTimestamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 var diff = (int)(newTimestamp-_timestamp);
                 _timer -= diff;
@@ -97,6 +100,7 @@ namespace GUI
         {
             //TODO Finish should only be called from backend callback, this should only update the UI 
             currentUpgrade++;
+            buttonText.text = InitialUpgradeButtonString;
             _nodeImageList[currentUpgrade].color = upgradedColor;
             priceText.text = (priceInitial * priceMultiplier * currentUpgrade).ToString();
 
