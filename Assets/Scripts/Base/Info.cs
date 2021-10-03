@@ -14,7 +14,7 @@ namespace Base
         {
             if (!string.IsNullOrEmpty(json) && _currentInfo != json)
             {
-                _infoChanged.Invoke();
+                _infoChanged?.Invoke();
                 _currentInfo = json;
                 _currentInfoClass = JsonUtility.FromJson<T>(json); 
             }
