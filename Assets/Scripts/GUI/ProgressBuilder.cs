@@ -62,7 +62,7 @@ namespace GUI
                 if (progress.Key == "ProgressData")
                 {
                     Debug.Log("key : " + progress.Key +" : value : " + progress.Value.DataObject);
-                    var info = ProgressInfo.GetProgressFromJson(progress.Value.DataObject.ToString());
+                    var info = ProgressInfo.GetInfoFromJson(progress.Value.DataObject.ToString());
 
                     _currentLevel = info.progress;
                     Debug.Log("Current Level : " + _currentLevel);

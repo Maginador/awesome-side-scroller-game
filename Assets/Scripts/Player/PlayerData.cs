@@ -1,5 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Info;
+using Playfab;
+using PlayFab.DataModels;
 using UnityEngine;
 
 namespace Player
@@ -7,38 +11,41 @@ namespace Player
     
     public class PlayerData : MonoBehaviour
     {
-        
-        private int _healthPoint = 100;
-        private int _power = 10;
-    
-        public int GetPower()
-        {
-            return _power;
-        }
+        private static UpgradeInfo _currentPlayerUpgradeInfo;
+        private static Profile _currentProfile;
 
-        public void SetPower(int power)
-        {
-            _power = power;
-        }
-        public static Profile CurrentProfile;
         public static void CreateNewPlayer()
         {
-            CurrentProfile = new Profile(SystemInfo.deviceUniqueIdentifier);
+            _currentProfile = new Profile(SystemInfo.deviceUniqueIdentifier);
         }
-    }
-
-    public class Profile
-    {
-        public Profile(string id)
+        public static UpgradeInfo GetPlayerUpgradeData()
         {
-            ID = id;
+            return _currentPlayerUpgradeInfo;
         }
 
-        private static string ID { get; set; }
-      
-        public static string GetID()
+        public static Profile GetPlayerProfile()
         {
-            return ID;
+            return _currentProfile;
+        }
+
+        public static void RequestUpgradeData()
+        {
+            PlayfabManager.Instance.AddUpgradeResultListener(UpgradeDataResult);
+        
+            PlayfabManager.Instance.GetPlayerUpgrades();
+        }
+
+        private static void UpgradeDataResult(Dictionary<string, ObjectResult> obj)
+        {
+            foreach (var upgrade in obj)
+            {
+                if (upgrade.Key == "UpgradeData")
+                {
+                    _currentPlayerUpgradeInfo = UpgradeInfo.GetUpgradeFromJson(upgrade.Value.DataObject.ToString());
+                    Debug.Log(_currentPlayerUpgradeInfo);
+                    
+                }
+            }
         }
     }
 }

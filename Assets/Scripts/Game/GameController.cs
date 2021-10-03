@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Info;
+using Player;
 using Playfab;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,6 +28,7 @@ namespace Game
             SceneManager.LoadScene(sceneBuildIndex: 1);
             PlayfabManager.Instance.PlayerLogin();
             GetCurrency();
+            PlayerData.RequestUpgradeData();
         }
 
         public void AddCurrencyChangedListener(Action action)

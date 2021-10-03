@@ -162,6 +162,11 @@ namespace Playfab
 
         public void GetPlayerUpgrades()
         {
+            _playFabEventsQueue.Enqueue(OnGetPlayerUpgrades);
+        }
+
+        private void OnGetPlayerUpgrades()
+        {
             if (PlayerPrefs.HasKey("UpgradesInitialized"))
             {
                 var request = new GetObjectsRequest {Entity = new EntityKey {Id = _login.EntityToken.Entity.Id, Type = _login.EntityToken.Entity.Type}};
