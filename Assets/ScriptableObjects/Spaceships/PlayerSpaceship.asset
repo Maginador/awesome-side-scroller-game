@@ -16,7 +16,8 @@ MonoBehaviour:
   healthPoints: 3
   speed: 5
   energy: 10
+  shootPower: 5
   shootRate: 1
   destructionVFX: {fileID: 0}
-  bullet: {fileID: 3426208447554051851, guid: bdd39a32c6681492c8a7c8eb8bf419a6, type: 3}
+  bullet: {fileID: 3426208447554051851, guid: 4f8c9ebb3683347f49dbc3bdba5a23d2, type: 3}
   bulletTag: PlayerBullet
