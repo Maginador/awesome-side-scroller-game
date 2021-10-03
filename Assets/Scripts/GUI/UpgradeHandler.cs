@@ -38,7 +38,7 @@ namespace GUI
             {
                 buttonText.text = "Speed Up \n" + ConvertMiliSeconds(_timer);
                 var newTimestamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                var diff = (int)(_timestamp - newTimestamp);
+                var diff = (int)(newTimestamp-_timestamp);
                 _timer -= diff;
             }
             else if(_isUpgrading)
