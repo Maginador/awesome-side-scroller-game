@@ -14,6 +14,7 @@ namespace Info
         // Start is called before the first frame update
         void Awake()
         {
+            if (PlayfabManager.Instance == null) return;
             PlayfabManager.Instance.AddUpgradeResultListener(UpgradeDataResult);
         
             PlayfabManager.Instance.GetPlayerUpgrades();

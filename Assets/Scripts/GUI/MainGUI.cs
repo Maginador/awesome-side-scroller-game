@@ -30,6 +30,7 @@ namespace Info
 
         public void Update()
         {
+            if (PlayfabManager.Instance == null) return;
             if (currentScreen == Screens.Load)
             {
                 if (PlayfabManager.Instance.IsLogged())

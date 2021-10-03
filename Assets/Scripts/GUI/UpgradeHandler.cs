@@ -1,5 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Playfab;
+using PlayFab.ClientModels;
+using PlayFab.DataModels;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,36 +23,85 @@ public class UpgradeHandler : MonoBehaviour
     [SerializeField] private Color upgradedColor;
 
     [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private TextMeshProUGUI buttonText;
     [SerializeField] private float priceInitial;
     [SerializeField] private float priceMultiplier;
+    private int _timer;
+    private bool _timerOn;
+    private long _timestamp;
 
-    private const int XVariation = 50;
+    private const int XVariation = 30;
 
-    // Start is called before the first frame update
+    private void Update()
+    {
+        if (_timer > 0)
+        {
+            buttonText.text = "Speed Up \n" + ConvertMiliSeconds(_timer);
+            var newTimestamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            var diff = (int)(_timestamp - newTimestamp);
+            _timer -= diff;
+        }
+        else
+        {
+            FinishUpgrade();
+        }
+        
+    }
+
     void Start()
     {
+        if(PlayfabManager.Instance)PlayfabManager.Instance.AddTimerResultListener(OnTimerResult);
         _nodeImageList = new List<Image>();
         GetUpgradeData();
         BuildUpgradeView();
+        
+    }
+
+    private void OnTimerResult(ExecuteCloudScriptResult obj)
+    {
+        if (obj.FunctionResult != null)
+        {
+            var split = obj.FunctionResult.ToString().Split(',');
+            if (split[0] == fieldName)
+            {
+                SetTimer(int.Parse(split[1]));
+            }
+        }
+    }
+
+    private void SetTimer(int time)
+    {
+        _timer = time;
+        _timestamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+    }
+
+    private string ConvertMiliSeconds(int time)
+    {
+        var seconds = time / 1000;
+        var minutes = seconds / 60;
+        var hours = minutes / 60;
+        return hours + ":" + minutes +":" + seconds;
     }
 
 
     public void DoUpgrade()
     {
         if (currentUpgrade == upgradeLimit) return;
+        DoBackendValidation();
+        
+    }
 
-        if (!DoBackendValidation()) return;
-       
+    public void FinishUpgrade()
+    {
         currentUpgrade++;
         _nodeImageList[currentUpgrade].color = upgradedColor;
         priceText.text = (priceInitial * priceMultiplier * currentUpgrade).ToString();
 
     }
 
-    private bool DoBackendValidation()
+    private void DoBackendValidation()
     {
-        //TODO Validate Backend 
-        return true;
+        PlayfabManager.Instance.ValidateUpgrade(fieldName, priceInitial * priceMultiplier * (currentUpgrade + 1));
     }
     private void BuildUpgradeView()
     {

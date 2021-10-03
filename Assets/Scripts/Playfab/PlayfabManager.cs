@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using Player;
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.CloudScriptModels;
 using PlayFab.DataModels;
 using UnityEngine;
 using EntityKey = PlayFab.DataModels.EntityKey;
+using ExecuteCloudScriptResult = PlayFab.ClientModels.ExecuteCloudScriptResult;
 
 namespace Playfab
 {
+    
     public class PlayfabManager : MonoBehaviour
     {
         public static PlayfabManager Instance;
@@ -18,16 +21,22 @@ namespace Playfab
         private bool _lockDispatcher = false;
 
         private Action<Dictionary<string, ObjectResult>> _upgradeResultListener;
+        private Action<ExecuteCloudScriptResult> _timerResultListener;
         private Action<Dictionary<string, ObjectResult>> _progressResultListener;
         private Action<Dictionary<string, ObjectResult>> _storeResultListener;
         private Action<Dictionary<string, ObjectResult>> _leaderboardsResultListener;
 
+        public ExecuteCloudScriptResult result;
         public void AddUpgradeResultListener(Action<Dictionary<string, ObjectResult>> listener)
         {
             _upgradeResultListener += listener;
         } public void AddProgressResultListener(Action<Dictionary<string, ObjectResult>> listener)
         {
             _progressResultListener += listener;
+        }
+        public void AddTimerResultListener(Action<ExecuteCloudScriptResult> listener)
+        {
+            _timerResultListener += listener;
         }
         public void Awake()
         {
@@ -37,6 +46,22 @@ namespace Playfab
             }
 
             _playFabEventsQueue = new Queue<Action>();
+        }
+
+        private void OnCloudscriptResult(ExecuteCloudScriptResult obj)
+        {
+
+            if (obj.FunctionName == "ValidateUpgrade")
+            { 
+                if(obj.FunctionResult != null) StartTimerForUpgrade(obj.FunctionResult.ToString());
+            }
+            if (obj.FunctionName == "StartTimerForUpgrade" || obj.FunctionName == "GetTimerForUpgrade")
+            {
+                _timerResultListener.Invoke(obj);
+            }
+            Debug.Log("Cloud Script Worked");
+            Debug.Log(obj.FunctionResult);
+            result = obj;
         }
 
         private void Update()
@@ -147,12 +172,12 @@ namespace Playfab
                 var request = new SetObjectsRequest();
                 var data = new Dictionary<string, object>()
                 {
-                    {"healthpoints", 0},
-                    {"energy", 0},
-                    {"shootpower", 0},
-                    {"firerate",0},
-                    {"armor",0},
-                    {"bullets",0},
+                    {"HealthPoints", 0},
+                    {"Energy", 0},
+                    {"ShootPower", 0},
+                    {"FireRate",0},
+                    {"Armor",0},
+                    {"Bullets",0},
                 
                 };
             
@@ -203,8 +228,7 @@ namespace Playfab
             _login = loginResult;
         
             _lockDispatcher = false;
-
-        
+            
         }
         private void OnGoogleLogin(LoginResult loginResult)
         {
@@ -229,5 +253,24 @@ namespace Playfab
         {
             return _login != null;
         }
+
+        public void ValidateUpgrade(string upgrade, float price)
+        {
+            var request = new ExecuteCloudScriptRequest()
+            {
+                FunctionName = "ValidateUpgrade", FunctionParameter = new {Upgrade = upgrade, Price = price}
+            };
+            PlayFabClientAPI.ExecuteCloudScript(request,OnCloudscriptResult,OnError);
+        }
+
+        public void StartTimerForUpgrade(string upgrade)
+        {
+            var request = new ExecuteCloudScriptRequest()
+            {
+                FunctionName = "StartTimerForUpgrade", FunctionParameter = new {Upgrade = upgrade}
+            };
+            PlayFabClientAPI.ExecuteCloudScript(request,OnCloudscriptResult,OnError);
+        }
+
     }
 }
